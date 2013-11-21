@@ -20,6 +20,9 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+//Modifications to fork - Matthew Nelson 2013
+//Minor additions for the ChipKit Uno, UC32 and Max32 board
+
 include <pins.scad>
 
 //Constructs a roughed out arduino board
@@ -27,10 +30,17 @@ include <pins.scad>
 module arduino(boardType = UNO) {
 	//The PCB with holes
 	difference() {
+		if (boardType==MAX32 || UNO32 || UC32) {
+			color("DarkRed") 
+			boardShape( boardType );
+		translate([0,0,-pcbHeight * 0.5]) holePlacement(boardType = boardType)
+			color("DarkRed") cylinder(r = mountingHoleRadius, h = pcbHeight * 2, $fn=32);
+		}
+		else {
 		color("SteelBlue") 
 			boardShape( boardType );
 		translate([0,0,-pcbHeight * 0.5]) holePlacement(boardType = boardType)
-			color("SteelBlue") cylinder(r = mountingHoleRadius, h = pcbHeight * 2, $fn=32);
+			color("SteelBlue") cylinder(r = mountingHoleRadius, h = pcbHeight * 2, $fn=32);}
 	}
 	//Add all components to board
 	components( boardType = boardType, component = ALL );
@@ -247,7 +257,7 @@ module standoffs(
 	) {
 
 	holePlacement(boardType = boardType)
-		union() {
+		//union() {
 			difference() {
 				cylinder(r1 = bottomRadius, r2 = topRadius, h = height, $fn=32);
 				if( mountType == TAPHOLE ) {
@@ -258,7 +268,7 @@ module standoffs(
 				translate([0, 0, height - 1])
 				pintack( h=pcbHeight + 3, r = holeRadius, lh=3, lt=1, bh=1, br=topRadius );
 			}
-		}	
+		//}	
 }
 
 //This is used for placing the mounting holes and for making standoffs
@@ -413,6 +423,7 @@ DUE = 7;
 YUN = 8; 
 INTELGALILEO = 9;
 TRE = 10;
+MAX32 = 11;
 
 /********************************** MEASUREMENTS **********************************/
 pcbHeight = 1.7;
@@ -474,7 +485,8 @@ boardHoles = [
 		dueHoles,       //Due
 		0,              //Yun
 		0,              //Intel Galileo
-       	0               //Tre
+       	0,               //Tre
+       	megaHoles		//Max32
 		];
 
 /********************************** BOARD SHAPES **********************************/
@@ -513,7 +525,8 @@ boardShapes = [
 		megaBoardShape, //Due
 		0,             //Yun
 		0,             //Intel Galileo
-		0              //Tre
+		0,              //Tre
+		megaBoardShape	//Max32
 		];	
 
 /*********************************** COMPONENTS ***********************************/
@@ -547,6 +560,21 @@ megaComponents = [
 	[[49.53, 72.39, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
 	[[1.27, 92.71, 0], [headerWidth * 18, headerWidth * 2, headerHeight], [0, 0, 1], HEADER_F, "Black"],
 	[[9.34, -6.5, 0],[12, 16, 11],[0, -1, 0], USB, "LightGray"],
+	[[40.7, -1.8, 0], [9.0, 13.2, 10.9], [0, -1, 0], POWER, "Black" ]
+	];
+
+max32Components = [
+	[[1.27, 22.86, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[1.27+headerWidth, 22.86, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[1.27, 44.45, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[1.27+headerWidth, 44.45, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[1.27, 67.31, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[49.53, 31.75, 0], [headerWidth, headerWidth * 6, headerHeight ], [0, 0, 1], HEADER_F, "Black"],
+	[[49.53, 49.53, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[49.53, 72.39, 0], [headerWidth, headerWidth * 8, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[1.27, 92.71, 0], [headerWidth * 18, headerWidth * 2, headerHeight], [0, 0, 1], HEADER_F, "Black"],
+	[[11.5, -1.1, 0],[7.5, 5.9, 3],[0, -1, 0], USB, "LightGray" ],
+	//[[9.34, -6.5, 0],[12, 16, 11],[0, -1, 0], USB, "LightGray"],
 	[[40.7, -1.8, 0], [9.0, 13.2, 10.9], [0, -1, 0], POWER, "Black" ]
 	];
 
@@ -586,7 +614,8 @@ components = [
 	dueComponents,   	//Due
 	0,                 	//Yun
 	0,					//Intel Galileo
-	0					//Tre
+	0,					//Tre
+	max32Components		//Max32
 	];
 
 /****************************** NON-BOARD PARAMETERS ******************************/

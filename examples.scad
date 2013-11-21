@@ -6,18 +6,19 @@ include <arduino.scad>
 
 dueDimensions = boardDimensions( DUE );
 unoDimensions = boardDimensions( UNO );
+maxDimensions = boardDimensions( MAX32 );
 
 //Board mockups
-arduino();
+arduino(MAX32);
 
 translate( [unoDimensions[0] + 50, 0, 0] )
-	arduino(DUE);
+	arduino(MEGA);
 
 translate( [-(unoDimensions[0] + 50), 0, 0] )
 	arduino(LEONARDO);
 
 translate([0, 0, -75]) {
-	enclosure();
+	enclosure(MAX32);
 
 	translate( [unoDimensions[0] + 50, 0, 0] )
 		bumper(DUE);
