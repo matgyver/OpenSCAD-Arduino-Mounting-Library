@@ -257,7 +257,7 @@ module standoffs(
 	) {
 
 	holePlacement(boardType = boardType)
-		//union() {
+		union() {
 			difference() {
 				cylinder(r1 = bottomRadius, r2 = topRadius, h = height, $fn=32);
 				if( mountType == TAPHOLE ) {
@@ -268,7 +268,7 @@ module standoffs(
 				translate([0, 0, height - 1])
 				pintack( h=pcbHeight + 3, r = holeRadius, lh=3, lt=1, bh=1, br=topRadius );
 			}
-		//}	
+		}	
 }
 
 //This is used for placing the mounting holes and for making standoffs
@@ -357,12 +357,14 @@ module clipHole(clipWidth = 5, clipDepth = 5, clipHeight = 5, lipDepth = 1.5, li
 
 module mountingHole(screwHeadRad = woodscrewHeadRad, screwThreadRad = woodscrewThreadRad, screwHeadHeight = woodscrewHeadHeight, holeDepth = 10) {
 	union() {
+		
 		translate([0, 0, -0.01])
 			cylinder( r = screwThreadRad, h = 1.02, $fn = 32 );
 		translate([0, 0, 1])
 			cylinder( r1 = screwThreadRad, r2 = screwHeadRad, h = screwHeadHeight, $fn = 32 );
 		translate([0, 0, screwHeadHeight - 0.01 + 1])
 			cylinder( r = screwHeadRad, h = holeDepth - screwHeadHeight + 0.02, $fn = 32 );
+		
 	}
 }
 

@@ -30,5 +30,5 @@ translate([0, 0, -75]) {
 }
 
 translate([0, 0, 75]) {
-	enclosureLid();
+	enclosureLid(MAX32);
 }
