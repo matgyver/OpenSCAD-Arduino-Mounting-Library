@@ -1,3 +1,12 @@
+//This is a fork from Kelly Egan's Arduino library
+//Changes made were mostly to accomadate some of Digilent's ChipKit boards
+//In addition, made an option for using screw holes for the lid instead of
+//the snap lid, which tends to break on opening.
+
+//It should be noted that this also uses the pins library which can be found here:
+//http://www.thingiverse.com/thing:10541
+
+//Orignal license
 // Arduino connectors library
 //
 // Copyright (c) 2013 Kelly Egan
@@ -20,8 +29,11 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-//Modifications to fork - Matthew Nelson 2013
+//Modifications to fork - Matthew Nelson 2013,2014
 //Minor additions for the ChipKit Uno, UC32 and Max32 board
+//Added option for screw holes for holding the lid
+
+
 
 include <pins.scad>
 
